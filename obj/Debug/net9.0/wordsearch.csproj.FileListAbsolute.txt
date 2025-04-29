@@ -1,0 +1,15 @@
+C:\Users\daci\Documents\wordsearch\bin\Debug\net9.0\wordsearch.exe
+C:\Users\daci\Documents\wordsearch\bin\Debug\net9.0\wordsearch.deps.json
+C:\Users\daci\Documents\wordsearch\bin\Debug\net9.0\wordsearch.runtimeconfig.json
+C:\Users\daci\Documents\wordsearch\bin\Debug\net9.0\wordsearch.dll
+C:\Users\daci\Documents\wordsearch\bin\Debug\net9.0\wordsearch.pdb
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.AssemblyInfoInputs.cache
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.AssemblyInfo.cs
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.csproj.CoreCompileInputs.cache
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.sourcelink.json
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.dll
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\refint\wordsearch.dll
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.pdb
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\wordsearch.genruntimeconfig.cache
+C:\Users\daci\Documents\wordsearch\obj\Debug\net9.0\ref\wordsearch.dll
