@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\daci\\Documents\\wordsearch\\wordsearch.csproj",
-      "projectName": "wordsearch",
-      "projectPath": "C:\\Users\\daci\\Documents\\wordsearch\\wordsearch.csproj",
+      "projectUniqueName": "C:\\Users\\daci\\wordsearch\\WordSearch.csproj",
+      "projectName": "WordSearch",
+      "projectPath": "C:\\Users\\daci\\wordsearch\\WordSearch.csproj",
       "packagesPath": "C:\\Users\\daci\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\daci\\Documents\\wordsearch\\obj\\",
+      "outputPath": "C:\\Users\\daci\\wordsearch\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
