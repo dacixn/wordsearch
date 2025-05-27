@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace WordSearch
 {
@@ -8,5 +9,21 @@ namespace WordSearch
         {
             
         }
+    }
+
+    public class Display
+    {
+    }
+
+    public class Game
+    {
+    }
+
+    public class Word
+    {
+    }
+
+    public class Matrix
+    {
     }
 }
