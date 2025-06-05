@@ -1,0 +1,15 @@
+/workspaces/wordsearch/bin/Debug/net8.0/WordSearch
+/workspaces/wordsearch/bin/Debug/net8.0/WordSearch.deps.json
+/workspaces/wordsearch/bin/Debug/net8.0/WordSearch.runtimeconfig.json
+/workspaces/wordsearch/bin/Debug/net8.0/WordSearch.dll
+/workspaces/wordsearch/bin/Debug/net8.0/WordSearch.pdb
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.AssemblyInfoInputs.cache
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.AssemblyInfo.cs
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.csproj.CoreCompileInputs.cache
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.sourcelink.json
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.dll
+/workspaces/wordsearch/obj/Debug/net8.0/refint/WordSearch.dll
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.pdb
+/workspaces/wordsearch/obj/Debug/net8.0/WordSearch.genruntimeconfig.cache
+/workspaces/wordsearch/obj/Debug/net8.0/ref/WordSearch.dll

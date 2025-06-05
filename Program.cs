@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks.Dataflow;
 
 namespace WordSearch
 {
@@ -21,27 +17,21 @@ namespace WordSearch
                 }
                 Console.WriteLine();
             }
+
+            Console.SetCursorPosition(20, 20);
         }
     }
 
     public class Display
     {
-        public void DisplayMatrix()
+        public void DisplayLabels(string[,] matrix, int width)
         {
-
+            
         }
-    }
 
-    public class Game
-    {
-
-    }
-
-    public class Word
-    {
-        public string Random()
+        public void DisplayMatrix(string[,] matrix)
         {
-            return "foo";
+
         }
     }
 
@@ -71,7 +61,7 @@ namespace WordSearch
             return matrix;
         }
 
-        public string FindLetter()
+        public string FindLetter(int x, int y)
         {
             return "foo";
         }
