@@ -7,26 +7,44 @@ namespace WordSearch
         static void Main(string[] args)
         {
             Matrix matrix = new Matrix(24);
+            Display display = new Display();
+
             Console.WriteLine(matrix.Grid[1, 1]);
 
-            for (int x = 0; x < matrix.Width; x++)
+            /* for (int x = 0; x < matrix.Width; x++)
             {
                 for (int y = 0; y < matrix.Width; y++)
                 {
                     Console.Write(matrix.Grid[x, y] + " ");
                 }
                 Console.WriteLine();
-            }
+            } */
 
-            Console.SetCursorPosition(20, 20);
+            display.DisplayLabels(matrix.Width);
+
         }
     }
 
     public class Display
     {
-        public void DisplayLabels(string[,] matrix, int width)
+        public void DisplayLabels(int width)
         {
-            
+            for (int i = 1; i <= width; i++)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine();
+            for (int i = 1; i <= width; i++)
+            {
+                if (i < 10)
+                {
+                    Console.Write("━" + "━");
+                }
+                else
+                {   
+                    Console.Write("━━" + "━");
+                }
+            }
         }
 
         public void DisplayMatrix(string[,] matrix)
