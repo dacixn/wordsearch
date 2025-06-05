@@ -6,10 +6,8 @@ namespace WordSearch
     {
         static void Main(string[] args)
         {
-            Matrix matrix = new Matrix(24);
+            Matrix matrix = new Matrix(10);
             Display display = new Display();
-
-            Console.WriteLine(matrix.Grid[1, 1]);
 
             /* for (int x = 0; x < matrix.Width; x++)
             {
@@ -29,21 +27,48 @@ namespace WordSearch
     {
         public void DisplayLabels(int width)
         {
+            Console.Write("    ");
+
             for (int i = 1; i <= width; i++)
             {
                 Console.Write(i + " ");
             }
+
             Console.WriteLine();
+
             for (int i = 1; i <= width; i++)
             {
                 if (i < 10)
                 {
-                    Console.Write("━" + "━");
+                    Console.Write(" ");
+                }
+
+                Console.Write(i + " ");
+
+                if (i == 1)
+                {
+                    Console.Write("┏");
+
+                    for (int j = 1; j <= width; j++)
+                    {
+                        if (j < 10)
+                        {
+                            Console.Write("━" + "━");
+                        }
+                        else
+                        {
+                            Console.Write("━━" + "━");
+                        }
+                    }
+                    
+                    Console.WriteLine();
                 }
                 else
-                {   
-                    Console.Write("━━" + "━");
+                {
+                    Console.Write("┃");
+                    Console.WriteLine();
                 }
+
             }
         }
 
