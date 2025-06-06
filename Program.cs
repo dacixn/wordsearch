@@ -10,17 +10,9 @@ namespace WordSearch
             Matrix matrix = new Matrix(16);
             Display display = new Display();
 
-            /* for (int x = 0; x < matrix.Width; x++)
-            {
-                for (int y = 0; y < matrix.Width; y++)
-                {
-                    Console.Write(matrix.Grid[x, y] + " ");
-                }
-                Console.WriteLine();
-            } */
-
             display.DisplayLabels(matrix.Width);
-            Console.SetCursorPosition(0, 0);
+            display.DisplayMatrix(matrix.Grid, matrix.Width);
+
             Console.ReadKey();
 
         }
@@ -28,20 +20,14 @@ namespace WordSearch
 
     public class Display
     {
-        public void DisplayLabels(int width) // ━━┏┃
+        public void DisplayLabels(int width)
         {
             Console.Write("    ");
 
             // -- print x letters
             for (int i = 0; i < width; i++)
             {
-                // add a leading space for numbers under 10
-                //if (i < 10)
-                //{
-                //    Console.Write(" ");
-                //}
-                //Console.Write(i + " ");
-
+               
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
                 Console.Write(" " + alpha[i]);
             }
@@ -58,7 +44,6 @@ namespace WordSearch
 
             Console.WriteLine("");
 
-            // -- print y numbers
             for (int i = 1; i <= width; i++)
             {
                 if (i < 10)
@@ -70,9 +55,20 @@ namespace WordSearch
             
         }
 
-        public void DisplayMatrix(string[,] matrix)
+        public void DisplayMatrix(string[,] matrix, int width)
         {
+            Console.SetCursorPosition(5, 2);
+            (int left, int top) = Console.GetCursorPosition();
 
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < width; y++)
+                {
+                    Console.Write(matrix[x, y] + " ");
+                }
+                top++;
+                Console.SetCursorPosition(5, top);
+            }
         }
     }
 
@@ -107,7 +103,7 @@ namespace WordSearch
             return "foo";
         }
 
-        public void InsertWord(string word)
+        public void InsertWord(string word, int dx, int dy)
         {
 
         }
