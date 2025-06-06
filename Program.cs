@@ -27,7 +27,7 @@ namespace WordSearch
             // -- print x letters
             for (int i = 0; i < width; i++)
             {
-               
+
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
                 Console.Write(" " + alpha[i]);
             }
