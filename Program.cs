@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 
 namespace WordSearch
 {
@@ -20,7 +21,7 @@ namespace WordSearch
 
             display.DisplayLabels(matrix.Width);
             Console.SetCursorPosition(0, 0);
-            Console.Write("Hello");
+            Console.ReadKey();
 
         }
     }
@@ -31,25 +32,28 @@ namespace WordSearch
         {
             Console.Write("    ");
 
-            // -- print the x axis numbers/letters
-            for (int i = 1; i <= width; i++)
+            // -- print x letters
+            for (int i = 0; i < width; i++)
             {
                 // add a leading space for numbers under 10
-                if (i < 10)
-                {
-                    Console.Write(" ");
-                }
-                Console.Write(i + " ");
+                //if (i < 10)
+                //{
+                //    Console.Write(" ");
+                //}
+                //Console.Write(i + " ");
+
+                char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+                Console.Write(" " + alpha[i]);
             }
 
             // -- print big line
             Console.WriteLine("");
             Console.Write("   ");
-            Console.Write("┏");
+            Console.Write("┌");
 
             for (int i = 1; i <= width; i++)
             {
-                Console.Write("──" + "─");
+                Console.Write("─" + "─");
             }
 
             Console.WriteLine("");
