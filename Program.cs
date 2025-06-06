@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Security;
 
 namespace WordSearch
@@ -10,9 +11,13 @@ namespace WordSearch
             Matrix matrix = new Matrix(16);
             Display display = new Display();
 
+            Console.SetWindowSize(60, 30);
+
+            matrix.InsertWord("hello", 2, 2, 0, 1);
             display.DisplayLabels(matrix.Width);
             display.DisplayMatrix(matrix.Grid, matrix.Width);
-
+            Console.ReadKey();
+            display.DisplayLogo();
             Console.ReadKey();
 
         }
@@ -70,6 +75,34 @@ namespace WordSearch
                 Console.SetCursorPosition(5, top);
             }
         }
+
+        public void DisplayLogo()
+        {
+            Console.Clear();
+            double height = Console.WindowHeight;
+            double width = Console.WindowWidth;
+
+            string[] logo = [
+                "                       _                           _     ",
+                "                      | |                         | |    ",
+                "__      _____  _ __ __| |  ___  ___  __ _ _ __ ___| |__  ",
+                "\\ \\ /\\ / / _ \\| '__/ _` | / __|/ _ \\/ _` | '__/ __| '_ \\ ",
+                " \\ V  V / (_) | | | (_| | \\__ \\  __/ (_| | | | (__| | | |",
+                "  \\_/\\_/ \\___/|_|  \\__,_| |___/\\___|\\__,_|_|  \\___|_| |_|",
+                "",
+                "",
+                "                 Press Any Key to Play"];
+
+            double y = Math.Floor(height / 2 - 9 / 2);
+            double x = Math.Floor(width / 2 - 57 / 2);
+
+            foreach (string line in logo)
+            {
+                Console.SetCursorPosition((int)x, (int)y);
+                Console.WriteLine(line);
+                y++;
+            }
+        }
     }
 
     public class Matrix
@@ -97,13 +130,31 @@ namespace WordSearch
 
             return matrix;
         }
-
-        public string FindLetter(int x, int y)
+        public void MaxStart()
         {
-            return "foo";
+            //def calculate_word_max_start(word):
+            //max_x = 24 + 1 - len(word)
+            //max_y = 24 + 1 - len(word)
+            //max_coords = [max_x, max_y]
+            //return max_coords
         }
+        public void InsertWord(string word, int x, int y, int dx, int dy)
+        {
+            string upperWord = word.ToUpper();
+            char[] array = upperWord.ToCharArray();
 
-        public void InsertWord(string word, int dx, int dy)
+            foreach (char c in array)
+            {
+                Grid[x, y] = c.ToString();
+                x = x + dx;
+                y = y + dy;
+            }
+        }
+    }
+
+    public class Word
+    {
+        public Word()
         {
 
         }
