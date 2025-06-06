@@ -6,7 +6,7 @@ namespace WordSearch
     {
         static void Main(string[] args)
         {
-            Matrix matrix = new Matrix(10);
+            Matrix matrix = new Matrix(16);
             Display display = new Display();
 
             /* for (int x = 0; x < matrix.Width; x++)
@@ -19,57 +19,51 @@ namespace WordSearch
             } */
 
             display.DisplayLabels(matrix.Width);
+            Console.SetCursorPosition(0, 0);
+            Console.Write("Hello");
 
         }
     }
 
     public class Display
     {
-        public void DisplayLabels(int width)
+        public void DisplayLabels(int width) // ━━┏┃
         {
             Console.Write("    ");
 
+            // -- print the x axis numbers/letters
             for (int i = 1; i <= width; i++)
             {
+                // add a leading space for numbers under 10
+                if (i < 10)
+                {
+                    Console.Write(" ");
+                }
                 Console.Write(i + " ");
             }
 
-            Console.WriteLine();
+            // -- print big line
+            Console.WriteLine("");
+            Console.Write("   ");
+            Console.Write("┏");
 
+            for (int i = 1; i <= width; i++)
+            {
+                Console.Write("──" + "─");
+            }
+
+            Console.WriteLine("");
+
+            // -- print y numbers
             for (int i = 1; i <= width; i++)
             {
                 if (i < 10)
                 {
                     Console.Write(" ");
                 }
-
-                Console.Write(i + " ");
-
-                if (i == 1)
-                {
-                    Console.Write("┏");
-
-                    for (int j = 1; j <= width; j++)
-                    {
-                        if (j < 10)
-                        {
-                            Console.Write("━" + "━");
-                        }
-                        else
-                        {
-                            Console.Write("━━" + "━");
-                        }
-                    }
-                    
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.Write("┃");
-                    Console.WriteLine();
-                }
-
+                Console.WriteLine(i + " │");
             }
+            
         }
 
         public void DisplayMatrix(string[,] matrix)
