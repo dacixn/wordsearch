@@ -30,7 +30,7 @@ namespace WordSearch
 
         public GameLoop()
         {
-            matrix = new Matrix(16);
+            matrix = new Matrix(20);
             display = new Display();
             words = new List<Word>();
             wordsFound = 0;
@@ -61,7 +61,10 @@ namespace WordSearch
             List<string> wordsToSave = new List<string>();
             foreach (string s in wordArray)
             {
-                wordsToSave.Add(s.Trim());
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    wordsToSave.Add(s.Trim());
+                }
             }
 
             File.WriteAllLines("words.txt", wordsToSave);
@@ -101,10 +104,19 @@ namespace WordSearch
             lines.Add("WORDS TO FIND:");
             foreach (Word word in words)
             {
-                lines.Add(word.Text.ToUpper());
+                string startCoord = FormatCoordinate(word.StartX, word.StartY);
+                string endCoord = FormatCoordinate(word.EndX, word.EndY);
+                lines.Add($"{word.Text.ToUpper()} ({startCoord},{endCoord})");
             }
 
             File.WriteAllLines(path, lines);
+        }
+
+        private string FormatCoordinate(int x, int y)
+        {
+            char col = (char)('A' + x);
+            int row = y + 1;
+            return $"{col}{row}";
         }
 
         private void Play()
@@ -113,15 +125,15 @@ namespace WordSearch
             {
                 Console.Clear();
                 display.DisplayLabels(matrix.Width);
-                display.DisplayMatrix(matrix.Grid, matrix.Width);
+                display.DisplayMatrix(matrix.Grid, matrix.Width, false, null);
 
                 Console.SetCursorPosition(0, matrix.Width + 4);
-                Console.WriteLine("WORDS TO FIND:");
+                Console.WriteLine("WORDS TO FIND: (type 'cheat' to reveal answers)");
                 foreach (Word word in words)
                 {
                     if (word.Found)
                     {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine(word.Text.ToUpper());
                         Console.ResetColor();
                     }
@@ -134,40 +146,37 @@ namespace WordSearch
                 Console.WriteLine($"\nFound {wordsFound} of {words.Count}");
                 Console.Write("Enter coordinates of a word (e.g., A1,F6): ");
                 string guess = Console.ReadLine();
+
+                if (guess.ToLower().Trim() == "cheat")
+                {
+                    Console.Clear();
+                    display.DisplayLabels(matrix.Width);
+                    display.DisplayMatrix(matrix.Grid, matrix.Width, true, matrix.IsWordCell);
+                    Console.SetCursorPosition(0, matrix.Width + 4);
+                    Console.WriteLine("Cheat mode activated. Press any key to continue playing.");
+                    Console.ReadKey(true);
+                    continue;
+                }
+
                 CheckGuess(guess);
             }
 
             Console.Clear();
             display.DisplayLabels(matrix.Width);
-            display.DisplayMatrix(matrix.Grid, matrix.Width);
+            display.DisplayMatrix(matrix.Grid, matrix.Width, false, null);
             Console.SetCursorPosition(0, matrix.Width + 4);
-            Console.WriteLine("Congratulations! You found all the words!");
+            Console.WriteLine("You found all the words");
         }
 
         private (int, int) ParseCoordinate(string coord)
         {
-            if (string.IsNullOrEmpty(coord) || coord.Length < 2)
-            {
-                return (-1, -1);
-            }
-
+            if (string.IsNullOrEmpty(coord) || coord.Length < 2) return (-1, -1);
             coord = coord.ToUpper();
             char colChar = coord[0];
-            string rowStr = coord.Substring(1);
-
-            if (colChar < 'A' || colChar > 'Z' || !int.TryParse(rowStr, out int rowNum))
-            {
-                return (-1, -1);
-            }
-
+            if (!int.TryParse(coord.Substring(1), out int rowNum)) return (-1, -1);
             int x = colChar - 'A';
             int y = rowNum - 1;
-
-            if (x < 0 || x >= matrix.Width || y < 0 || y >= matrix.Width)
-            {
-                return (-1, -1);
-            }
-
+            if (x < 0 || x >= matrix.Width || y < 0 || y >= matrix.Width) return (-1, -1);
             return (x, y);
         }
 
@@ -175,19 +184,10 @@ namespace WordSearch
         {
             input = input.Replace(" ", "");
             string[] parts = input.Split(',');
-
-            if (parts.Length != 2)
-            {
-                return;
-            }
-
-            (int startX, int startY) = ParseCoordinate(parts[0]);
-            (int endX, int endY) = ParseCoordinate(parts[1]);
-
-            if (startX == -1 || endX == -1)
-            {
-                return;
-            }
+            if (parts.Length != 2) return;
+            var (startX, startY) = ParseCoordinate(parts[0]);
+            var (endX, endY) = ParseCoordinate(parts[1]);
+            if (startX == -1 || endX == -1) return;
 
             foreach (Word word in words)
             {
@@ -195,7 +195,6 @@ namespace WordSearch
                 {
                     bool forwardMatch = (word.StartX == startX && word.StartY == startY && word.EndX == endX && word.EndY == endY);
                     bool reverseMatch = (word.EndX == startX && word.EndY == startY && word.StartX == endX && word.StartY == endY);
-
                     if (forwardMatch || reverseMatch)
                     {
                         word.Found = true;
@@ -212,37 +211,27 @@ namespace WordSearch
         public void DisplayLabels(int width)
         {
             Console.Write("    ");
-
             for (int i = 0; i < width; i++)
             {
-
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
                 Console.Write(" " + alpha[i]);
             }
-
             Console.WriteLine("");
             Console.Write("   ");
             Console.Write("┌");
-
             for (int i = 1; i <= width; i++)
             {
                 Console.Write("─" + "─");
             }
-
             Console.WriteLine("");
-
             for (int i = 1; i <= width; i++)
             {
-                if (i < 10)
-                {
-                    Console.Write(" ");
-                }
+                if (i < 10) Console.Write(" ");
                 Console.WriteLine(i + " │");
             }
-
         }
 
-        public void DisplayMatrix(string[,] matrix, int width)
+        public void DisplayMatrix(string[,] matrix, int width, bool showCheat, bool[,] isWordCell)
         {
             Console.SetCursorPosition(5, 2);
             int left = Console.CursorLeft;
@@ -252,7 +241,16 @@ namespace WordSearch
             {
                 for (int x = 0; x < width; x++)
                 {
-                    Console.Write(matrix[x, y] + " ");
+                    if (showCheat && isWordCell[x, y])
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(matrix[x, y] + " ");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.Write(matrix[x, y] + " ");
+                    }
                 }
                 top++;
                 Console.SetCursorPosition(left, top);
@@ -262,9 +260,6 @@ namespace WordSearch
         public void DisplayLogo()
         {
             Console.Clear();
-            double height = Console.WindowHeight;
-            double width = Console.WindowWidth;
-
             string[] logo = new string[] {
                 "                       _                           _     ",
                 "                      | |                         | |    ",
@@ -276,8 +271,8 @@ namespace WordSearch
                 "",
                 "                 Press Any Key to Play"};
 
-            double y = Math.Floor(height / 2 - 9 / 2);
-            double x = Math.Floor(width / 2 - 57 / 2);
+            double y = Math.Floor((double)(Console.WindowHeight / 2 - logo.Length / 2));
+            double x = Math.Floor((double)(Console.WindowWidth / 2 - logo[0].Length / 2));
 
             foreach (string line in logo)
             {
@@ -292,17 +287,18 @@ namespace WordSearch
     {
         public int Width { get; }
         public string[,] Grid { get; }
+        public bool[,] IsWordCell { get; }
 
         public Matrix(int desiredWidth)
         {
             Width = desiredWidth;
             Grid = Generate();
+            IsWordCell = new bool[Width, Width];
         }
 
         public string[,] Generate()
         {
             string[,] matrix = new string[Width, Width];
-
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Width; y++)
@@ -310,19 +306,7 @@ namespace WordSearch
                     matrix[x, y] = ".";
                 }
             }
-
             return matrix;
-        }
-
-        public int[] WordMaxStart(string word)
-        {
-            int length = word.Length;
-            int width = Width;
-
-            int maximumX = width - length;
-            int maximumY = width - length;
-
-            return new int[] { maximumX, maximumY };
         }
 
         public void InsertWord(string word, int x, int y, int dx, int dy)
@@ -333,38 +317,23 @@ namespace WordSearch
             foreach (char c in array)
             {
                 Grid[x, y] = c.ToString();
-                x = x + dx;
-                y = y + dy;
+                IsWordCell[x, y] = true;
+                x += dx;
+                y += dy;
             }
         }
 
         public bool CheckForOverlaps(string word, int x, int y, int dx, int dy)
         {
-            if (word.Length > Width)
-            {
-                Console.WriteLine($"Word '{word}' is larger than puzzle width ({word.Length} > {Width})");
-                return true;
-            }
-
             int currentX = x;
             int currentY = y;
-
             for (int i = 0; i < word.Length; i++)
             {
-                if (currentX >= Width || currentY >= Width || currentX < 0 || currentY < 0)
-                {
-                    return true;
-                }
-
-                if (Grid[currentX, currentY] != "." && Grid[currentX, currentY] != word[i].ToString().ToUpper())
-                {
-                    return true;
-                }
-
+                if (currentX >= Width || currentY >= Width || currentX < 0 || currentY < 0) return true;
+                if (Grid[currentX, currentY] != "." && Grid[currentX, currentY] != word[i].ToString().ToUpper()) return true;
                 currentX += dx;
                 currentY += dy;
             }
-
             return false;
         }
 
@@ -372,15 +341,14 @@ namespace WordSearch
         {
             Random random = new Random();
             int attempts = 0;
-
-            while (attempts < 500)
+            while (attempts < 25)
             {
-                int dx = 0;
-                int dy = 0;
-                while (dx == 0 && dy == 0)
+                int dx = random.Next(-1, 2);
+                int dy = random.Next(-1, 2);
+                if (dx == 0 && dy == 0)
                 {
-                    dx = random.Next(0, 2);
-                    dy = random.Next(0, 2);
+                    attempts++;
+                    continue;
                 }
 
                 int x = random.Next(0, Width);
@@ -389,20 +357,18 @@ namespace WordSearch
                 if (!CheckForOverlaps(wordText, x, y, dx, dy))
                 {
                     InsertWord(wordText, x, y, dx, dy);
-
-                    Word word = new Word();
-                    word.Text = wordText;
-                    word.StartX = x;
-                    word.StartY = y;
-                    word.EndX = x + (dx * (wordText.Length - 1));
-                    word.EndY = y + (dy * (wordText.Length - 1));
-
+                    Word word = new Word
+                    {
+                        Text = wordText,
+                        StartX = x,
+                        StartY = y,
+                        EndX = x + (dx * (wordText.Length - 1)),
+                        EndY = y + (dy * (wordText.Length - 1))
+                    };
                     return word;
                 }
-
                 attempts++;
             }
-
             Console.WriteLine($"Could not place word: {wordText}");
             return null;
         }
@@ -411,7 +377,6 @@ namespace WordSearch
         {
             Random random = new Random();
             char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-
             for (int y = 0; y < Width; y++)
             {
                 for (int x = 0; x < Width; x++)
