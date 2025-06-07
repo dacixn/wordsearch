@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.ComponentModel;
-using System.Security;
 
 namespace WordSearch
 {
@@ -43,13 +41,20 @@ namespace WordSearch
             SetupWords();
             PlaceWords();
             matrix.FillGrid();
+
+            SaveToFile("puzzle.txt");
+            Console.Clear();
+            Console.WriteLine("Puzzle has been saved to puzzle.txt");
+            Console.WriteLine("Press any key to start playing...");
+            Console.ReadKey(true);
+
             Play();
         }
 
         private void SetupWords()
         {
             Console.Clear();
-            Console.WriteLine("Enter words to find separated by a comma (for example 'hello,world,csharp'):");
+            Console.WriteLine("Enter words to find, separated by a comma (e.g. hello,world,csharp):");
             string input = Console.ReadLine();
             string[] wordArray = input.Split(',');
 
@@ -78,6 +83,30 @@ namespace WordSearch
             }
         }
 
+        public void SaveToFile(string path)
+        {
+            List<string> lines = new List<string>();
+
+            for (int y = 0; y < matrix.Width; y++)
+            {
+                string rowString = "";
+                for (int x = 0; x < matrix.Width; x++)
+                {
+                    rowString += matrix.Grid[x, y] + " ";
+                }
+                lines.Add(rowString.TrimEnd());
+            }
+
+            lines.Add("");
+            lines.Add("WORDS TO FIND:");
+            foreach (Word word in words)
+            {
+                lines.Add(word.Text.ToUpper());
+            }
+
+            File.WriteAllLines(path, lines);
+        }
+
         private void Play()
         {
             while (wordsFound < words.Count)
@@ -87,7 +116,7 @@ namespace WordSearch
                 display.DisplayMatrix(matrix.Grid, matrix.Width);
 
                 Console.SetCursorPosition(0, matrix.Width + 4);
-                Console.WriteLine("Words:");
+                Console.WriteLine("WORDS TO FIND:");
                 foreach (Word word in words)
                 {
                     if (word.Found)
@@ -103,7 +132,7 @@ namespace WordSearch
                 }
 
                 Console.WriteLine($"\nFound {wordsFound} of {words.Count}");
-                Console.Write("Enter word coordinates (A1,F6): ");
+                Console.Write("Enter coordinates of a word (e.g., A1,F6): ");
                 string guess = Console.ReadLine();
                 CheckGuess(guess);
             }
@@ -112,7 +141,7 @@ namespace WordSearch
             display.DisplayLabels(matrix.Width);
             display.DisplayMatrix(matrix.Grid, matrix.Width);
             Console.SetCursorPosition(0, matrix.Width + 4);
-            Console.WriteLine("You found all the words!");
+            Console.WriteLine("Congratulations! You found all the words!");
         }
 
         private (int, int) ParseCoordinate(string coord)
